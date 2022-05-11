@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+#Walmart {
+	left: 10px;
+	top: 270px;
+}
+
+#Kroger {
+	left: 145px;
+	top: 270px;
+}
+
+#Aldi {
+	left: 280px;
+	top: 270px;
+}
+
+#Meijer {
+	left: 10px;
+	top: 390px;
+}
+
+#WholeFood {
+	left: 145px;
+	top: 390px;
+}
+
+#Costco {
+	left: 280px;
+	top: 390px;
+}
+
+#FreshThyme {
+	left: 10px;
+	top: 525px;
+}
+
+#Publix {
+	left: 145px;
+	top: 525px;
+}
+
+#Wegmans {
+	left: 280px;
+	top: 525px;
+}
+
+#StopShop {
+	left: 10px;
+	top: 660px;
+}
+
+#Walgreens {
+	left: 145px;
+	top: 660px;
+}
+
+#KingsFood {
+	left: 280px;
+	top: 660px;
+}
+.store {
+	position: absolute;
+	transform: scale(.8);
+}

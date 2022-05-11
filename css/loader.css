@@ -1,0 +1,66 @@
+@keyframes ld {
+  0% { opacity: 1 }
+  100% { opacity: 0 }
+}
+.ld div {
+  left: 97px;
+  top: 71px;
+  position: absolute;
+  animation: ld linear 0.65s infinite;
+  background: #628d95;
+  width: 6px;
+  height: 22px;
+  border-radius: 3px / 3.3px;
+  transform-origin: 3px 29px;
+}.ld div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -0.56;
+  background: #628d95;
+}.ld div:nth-child(2) {
+  transform: rotate(45deg);
+  animation-delay: -0.48s;
+  background: #628d95;
+}.ld div:nth-child(3) {
+  transform: rotate(90deg);
+  animation-delay: -0.4s;
+  background: #628d95;
+}.ld div:nth-child(4) {
+  transform: rotate(135deg);
+  animation-delay: -0.32s;
+  background: #628d95;
+}.ld div:nth-child(5) {
+  transform: rotate(180deg);
+  animation-delay: -0.24s;
+  background: #628d95;
+}.ld div:nth-child(6) {
+  transform: rotate(225deg);
+  animation-delay: -0.16s;
+  background: #628d95;
+}.ld div:nth-child(7) {
+  transform: rotate(270deg);
+  animation-delay: -0.08s;
+  background: #628d95;
+}.ld div:nth-child(8) {
+  transform: rotate(315deg);
+  animation-delay: 0s;
+  background: #628d95;
+}
+.loader {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 41px auto;
+  z-index: 6;
+  width: 390px;
+  height: 844px;
+  background-image: url("../img/matras&logo.jpg");
+}
+.ld {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  backface-visibility: hidden;
+}
+.ld div { box-sizing: content-box; }
+.loaded { display: none; }

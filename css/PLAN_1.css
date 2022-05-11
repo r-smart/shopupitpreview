@@ -1,0 +1,200 @@
+@charset "utf-8";
+.greens
+{
+	position : absolute ;
+	left : 631px;
+	top : 2315px;
+	width : 1244px;
+	height : 291px;
+}
+.frozen
+{
+	position : absolute ;
+	left : 464px;
+	top : 949px;
+	width : 290px;
+	height : 1281px;
+}
+.fresh
+{
+	position : absolute ;
+	left : 2087px;
+	top : 933px;
+	width : 1016px;
+	height : 327px;
+}
+.layer_1
+{
+	position : absolute ;
+	left : 50px;
+	top : 150px;
+	width : 3902px;
+	height : 3613px;
+}
+.bread
+{
+	position : absolute ;
+	left : 835px;
+	top : 199px;
+	width : 756px;
+	height : 317px;
+}
+.meat2
+{
+	position : absolute ;
+	left : 2409px;
+	top : 199px;
+	width : 760px;
+	height : 317px;
+}
+.fish2
+{
+	position : absolute ;
+	left : 3248px;
+	top : 949px;
+	width : 290px;
+	height : 1281px;
+}
+.Layer_2
+{
+	position : absolute ;
+	left : 0px;
+	top : 0px;
+	width : 4000px;
+	height : 4000px;
+}
+.spices
+{
+	position : absolute ;
+	left : 943px;
+	top : 577px;
+	width : 958px;
+	height : 293px;
+}
+.juices1
+{
+	position : absolute ;
+	left : 2083px;
+	top : 577px;
+	width : 640px;
+	height : 293px;
+}
+.meat1
+{
+	position : absolute ;
+	left : 1578px;
+	top : 199px;
+	width : 845px;
+	height : 322px;
+}
+.canned
+{
+	position : absolute ;
+	left : 879px;
+	top : 933px;
+	width : 1017px;
+	height : 327px;
+}
+.juices2
+{
+	position : absolute ;
+	left : 1107px;
+	top : 1791px;
+	width : 776px;
+	height : 309px;
+}
+.greens2
+{
+	position : absolute ;
+	left : 2104px;
+	top : 2315px;
+	width : 1242px;
+	height : 291px;
+}
+.eggs
+{
+	position : absolute ;
+	left : 2687px;
+	top : 577px;
+	width : 353px;
+	height : 293px;
+}
+.beer
+{
+	position : absolute ;
+	left : 178px;
+	top : 1932px;
+	width : 393px;
+	height : 1579px;
+}
+.fish
+{
+	position : absolute ;
+	left : 3108px;
+	top : 202px;
+	width : 222px;
+	height : 1065px;
+}
+.sauces
+{
+	position : absolute ;
+	left : 725px;
+	top : 1791px;
+	width : 447px;
+	height : 309px;
+}
+.vegetables
+{
+	position : absolute ;
+	left : 628px;
+	top : 3089px;
+	width : 2732px;
+	height : 255px;
+}
+.dairy
+{
+	position : absolute ;
+	left : 671px;
+	top : 202px;
+	width : 222px;
+	height : 1065px;
+}
+.milk
+{
+	position : absolute ;
+	left : 3430px;
+	top : 1932px;
+	width : 393px;
+	height : 1578px;
+}
+.fruits
+{
+	position : absolute ;
+	left : 807px;
+	top : 1335px;
+	width : 1083px;
+	height : 320px;
+}
+.breakfasts
+{
+	position : absolute ;
+	left : 2092px;
+	top : 1335px;
+	width : 1081px;
+	height : 320px;
+}
+.juices3
+{
+	position : absolute ;
+	left : 2098px;
+	top : 1791px;
+	width : 1156px;
+	height : 309px;
+}
+.plan{
+	position : absolute ;
+	left : 0;
+	top : 0;
+	width : 3902px;
+	height : 3613px;
+}

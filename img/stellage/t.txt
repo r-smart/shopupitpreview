@@ -1,0 +1,25 @@
+ Volume in drive K is Work
+ Volume Serial Number is 5040-0D7A
+
+ Directory of K:\Stas\SHOPUPIT\site\img\stellage
+
+10.05.2022  13:42    <DIR>          .
+10.05.2022  13:42    <DIR>          ..
+22.07.2021  09:30         1ÿ500ÿ186 beer.jpg
+22.07.2021  11:02         1ÿ395ÿ498 bread.jpg
+24.07.2021  08:46         2ÿ082ÿ947 breakfasts.jpg
+29.07.2021  08:24         2ÿ218ÿ955 canned.jpg
+22.07.2021  10:28         1ÿ280ÿ938 fruits.jpg
+22.07.2021  10:28         2ÿ276ÿ641 greens.jpg
+22.07.2021  10:29         1ÿ639ÿ567 greens2.jpg
+22.07.2021  10:16         2ÿ368ÿ261 juices.jpg
+29.07.2021  08:09         1ÿ333ÿ423 juices_eggs.jpg
+22.07.2021  10:36         2ÿ259ÿ255 meat1.jpg
+22.07.2021  10:37         2ÿ131ÿ536 meat2.jpg
+22.07.2021  10:43           786ÿ089 milk.jpg
+29.07.2021  08:20         2ÿ061ÿ238 spices.jpg
+10.05.2022  13:42                 0 t.txt
+07.05.2022  21:35         2ÿ635ÿ076 vegetables.jpg
+07.05.2022  21:34         2ÿ493ÿ690 vegetables2.jpg
+              16 File(s)     28ÿ463ÿ300 bytes
+               2 Dir(s)  476ÿ789ÿ870ÿ592 bytes free

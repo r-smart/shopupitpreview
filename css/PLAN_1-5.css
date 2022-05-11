@@ -1,0 +1,153 @@
+@charset "utf-8";
+
+
+#bread {
+	display: block;
+	left: 835px;
+	top: 199px;
+	width: 756px;
+	height: 317px;
+}
+
+#meat1 {
+	left: 1578px;
+	top: 199px;
+	width: 845px;
+	height: 322px;
+}
+
+#meat2 {
+	left: 2409px;
+	top: 199px;
+	width: 760px;
+	height: 317px;
+}
+
+#spices {
+	left: 943px;
+	top: 577px;
+	width: 958px;
+	height: 293px;
+}
+
+#eggs {
+	left: 2687px;
+	top: 577px;
+}
+
+#fruits {
+	left: 807px;
+	top: 1335px;
+	width: 1083px;
+	height: 320px;
+}
+
+#juices1 {
+	left: 2083px;
+	top: 577px;
+	width: 640px;
+	height: 293px;
+}
+
+#juices2 {
+	left: 1107px;
+	top: 1791px;
+	width: 776px;
+	height: 309px;
+}
+
+#juices3 {
+	left: 2098px;
+	top: 1791px;
+	width: 1156px;
+	height: 309px;
+}
+
+#canned {
+	left: 879px;
+	top: 933px;
+	width: 1017px;
+	height: 327px;
+}
+
+#fresh {
+	left: 2087px;
+	top: 933px;
+	width: 1016px;
+	height: 327px;
+}
+
+#breakfasts {
+	left: 2092px;
+	top: 1335px;
+	width: 1081px;
+	height: 320px;
+}
+
+#sauces {
+	left: 725px;
+	top: 1791px;
+	width: 447px;
+	height: 309px;
+}
+
+#beer {
+	left: 178px;
+	top: 1932px;
+}
+
+#dairy {
+	left: 671px;
+	top: 202px;
+	width: 222px;
+	height: 1065px;
+}
+
+#frozen {
+	left: 464px;
+	top: 949px;
+	width: 290px;
+	height: 1281px;
+}
+
+#greens {
+	left: 631px;
+	top: 2315px;
+	width: 1244px;
+	height: 291px;
+}
+
+#greens2 {
+	left: 2104px;
+	top: 2315px;
+	width: 1242px;
+	height: 291px;
+}
+
+#vegetables {
+	left: 628px;
+	top: 3089px;
+	width: 2732px;
+	height: 255px;
+}
+
+#fish {
+	left: 3108px;
+	top: 202px;
+	width: 222px;
+	height: 1065px;
+}
+
+#fish2 {
+	left: 3248px;
+	top: 949px;
+	width: 290px;
+	height: 1281px;
+}
+
+#milk {
+	left: 3430px;
+	top: 1932px;
+	width: 393px;
+	height: 1578px;
+}
