@@ -4,101 +4,155 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Email template By Adobe Dreamweaver</title>
-<link href="css/stores.css" rel="stylesheet" type="text/css">
-<style type="text/css">
+<title>Product</title>
+<link rel="shortcut icon" href="#">
+<link href="css/loader.css" rel="stylesheet" type="text/css">
+<link href="css/lenta.css" rel="stylesheet" type="text/css">
+<link href="css/UI.css" rel="stylesheet" type="text/css">
+<link href="css/clock.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
-body {
-	font-family: sans-serif;
-	font-style: normal;
-	font-weight: 400;
-	margin: 0;
-	background: url("img/Floor Texture 2 (0-00-00-00).png");
-}
+<style type="text/css">
 	
-#slide{
-  width:100%;
-  height:100%;
-  transition: transform .3s;
-}
-	
-.plan {
-	position: absolute;
-	left: 0;
-	top: 30;
-	width: auto;
-	height: auto;
-}
-.bbutt {
+#lenta {
 	position:absolute;
-	z-index: 1;
-	opacity: 0;
-	transition: opacity: .3s;
+	width: 390px;
+	height: auto;
+	top: 0px;
+	transform: translate(0px, 844px);
+	transition: transform .6s;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	z-index: 2;
+}
+	
+#container2{
+	z-index: 20;
+}
+.hole {
+	position: absolute;
+	left: 95px;
+	top: 90px;
+	width: 200px;
+	height: 267px;
+	box-shadow: 0 0 0 99999px rgba(10, 20, 40, .8);
+	border: solid 1px #cccccc;
+	z-index: 0;
 }
 </style>
+	
 <script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
+<script src="lib/clock.js" type="text/javascript"></script>
+	
 <script type="text/javascript">
+
+var stellageFName = "stellage4.html";
+var planFName = "plan_v5.html";
+var params = window.location.search;
+var fname = (params.charAt(0) == "?") ? params.split("=")[1] + ".jpg" : "fruits.jpg";
+var pos = {x: -190, y: -1000};
+var posLenta = {x: 0, y: 400};
+var scale = 1;
+//var t0 = new Date().getTime();
+
+function onLoadActions(){
+	$('.loader').fadeOut(300, function(){$(this).remove()});
+	$("#slide").css('transform', 'translate(' + pos.x + 'px, ' + pos.y +'px) scale(' + scale + ', ' + scale + ')');
+	$("#lenta").css('transform', 'translate(' + posLenta.x + 'px, ' + posLenta.y +'px)');
+}
+	
+$(window).on('load', function(){
+	onLoadActions(); 
+});
+
 $(document).ready(function (){
-    var scroll_zoom = new ScrollZoom($('#container'),10,0.1)
+    var scroll_zoom = new ScrollZoom($('#container'), 5, .1);
+//	console.log('ready: ' + (new Date().getTime() - t0)/1000)
 })
-function ScrollZoom(container,max_scale,factor){
-    var target = container.children().first()
-    var size = {w:target.width(),h:target.height()}
-    var pos = {x:0,y:0}
-    var scale = 1;
-    var zoom_target = {x:0,y:0}
-    var zoom_point = {x:0,y:0}
-    var last_mouse_position = { x:0, y:0 }
-    var drag_started = 0
-	var isMoved = 0
-	var curr;
-	var notFirstChildStr = ":not(:first-child)";
-//	target.css({'top': '0px', 'transition': 'transform 3.3s', 'transform-origin','0 0'});
-	target.css('transform','translate('+(pos.x)+'px,'+(pos.y)+'px) scale('+scale+','+scale+')')
 
-//	console.log($("#phoneFrame").children(notFirstChildStr))
-	
-//	for (var i = 0; i < bbs.length; i++){
-//		console.log(i + ": " + bbs[i].id)
-//	}
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'opacity':'100'});
-    });
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'opacity':'0'});
-    });
+function ScrollZoom(container, max_scale, factor){
+    var target = $("#slide");
+    var lenta = $("#lenta");
+    var size = {w: target.width(), h: target.height()};
+    var sizeLenta = {w: lenta.width(), h: lenta.height()};
+    var zoom_target = {x: 0, y: 0};
+    var zoom_point = {x: 0, y: 0};
+    var last_mouse_position = { x: 0, y: 0 };
+    var last_mouse_positionLenta = { x: 0, y: 0 };
+    var drag_started = 0;
+    var drag_startedLenta = 0;
+	var isMoved = 0;
+	var isMovedLenta = 0;
 
+	$("title").text(fname);
+	$("#stellage2d").attr('src', "img/stellage/" + fname);
+	$("#stellage2d").attr('data-page', "img/stellage/" + fname);
+	$("#stellage2d").css('visibility', 'visible');
+	$("#stellage2d").on('click', function() {
+		console.log(isMoved)
+        if(!isMoved) location = "product.html?n=" + fname;
+	})
+
+    target.css('transform-origin','0 0')
     target.on("mousewheel DOMMouseScroll",scrolled)
     target.on('mousemove', moved)
     target.on('mousedown', function() {
         drag_started = 1;
 		isMoved = 0;
         target.css({'cursor':'move', 'transition': 'transform 0s'});
-        /* Save mouse position */
         last_mouse_position = { x: event.pageX, y: event.pageY};
     });
 
     target.on('mouseup', function() {
         drag_started = 0;
-		target.children(":not(:first-child)").css({'transition': 'transform .3s'});
-    });
-
-    target.children(":not(:first-child)").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'transform':'scale(1)', 'transition': 'transform .3s'});
-    });
-
-    target.children(":not(:first-child)").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'transform':'scale(.8)', 'transition': 'transform .3s'});
     });
 
     target.on('mouseout', function() {
-        if(target.id == "slide") drag_started = 0;
+        drag_started = 0;
+    });	
+	
+	lenta.on('mousemove', movedLenta)
+    lenta.on('mousedown', function() {
+        drag_startedLenta = 1;
+		isMovedLenta = 0;
+        $(this).css({'cursor':'move', 'transition': 'transform 0s'});
+        last_mouse_positionLenta = { x: event.pageX, y: event.pageY};
     });
 
-    target.children(":not(:first-child)").on('click', function() {
-        if(!isMoved) location = "plan_v5.html?n=" + this.dataset.page;
+    lenta.on('mouseup', function() {
+        drag_startedLenta = 0;
+    });
+
+    lenta.on('mouseout', function() {
+        drag_startedLenta = 0;
+    });		
+	
+  	$("#bottomButtons").children(".bbutt").on('mouseover', function() {
+        $(this).css({'cursor':'pointer', 'opacity':'100'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('mouseout', function() {
+        $(this).css({'cursor':'auto', 'opacity':'0'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('click', function() {
+        location = this.dataset.page + ".html";
+    });
+			
+  	$("#backButton").on('mouseover', function() {
+        $(this).css('cursor', 'pointer');
+    });
+	
+  	$("#backButton").on('mouseout', function() {
+        $(this).css('cursor','auto');
+    });
+		
+  	$("#backButton").on('click', function() {
+        location = planFName;
     });
 
     function scrolled(e){
@@ -109,22 +163,18 @@ function ScrollZoom(container,max_scale,factor){
         e.preventDefault();
         var delta = e.deltaY || e.originalEvent.wheelDelta;
         if (delta === undefined) {
-          //we are on firefox
           delta = e.originalEvent.detail;
         }
-        delta = -1 * Math.max(-1,Math.min(1,delta)) // cap the delta to [-1,1] for cross browser consistency
+        delta = -1 * Math.max(-1,Math.min(1,delta));
 
-        // determine the point on where the slide is zoomed in
-        zoom_target.x = (zoom_point.x - pos.x)/scale
-        zoom_target.y = (zoom_point.y - pos.y)/scale
+        zoom_target.x = (zoom_point.x - pos.x)/scale;
+        zoom_target.y = (zoom_point.y - pos.y)/scale;
 
-        // apply zoom
-        scale -= delta * factor * scale
-        scale = Math.max(1,Math.min(max_scale,scale))
+        scale -= delta * factor * scale;
+        scale = Math.max(1,Math.min(max_scale,scale));
 
-        // calculate x and y based on zoom
-        pos.x = -zoom_target.x * scale + zoom_point.x
-        pos.y = -zoom_target.y * scale + zoom_point.y
+        pos.x = -zoom_target.x * scale + zoom_point.x;
+        pos.y = -zoom_target.y * scale + zoom_point.y;
 
         update()
     }
@@ -135,51 +185,105 @@ function ScrollZoom(container,max_scale,factor){
             var change_x = current_mouse_position.x - last_mouse_position.x;
             var change_y = current_mouse_position.y - last_mouse_position.y;
 
-            /* Save mouse position */
             last_mouse_position = current_mouse_position;
-            //Add the position change
             pos.x += change_x;
             pos.y += change_y;
 			isMoved = 1;
-			//target.css({'pointer-events': 'auto'});
-			
 
-        update()
+        update();
         }
-		//console.log(drag_started)
     }
 
     function update(){
-		if(pos.x > 0) pos.x = 0;
+        if(pos.x > 0) pos.x = 0;
         if(pos.x < -size.w * scale + 390) pos.x = -size.w * scale + 390;
         if(pos.y > 0) pos.y = 0;
-        if(pos.y < -size.h*scale + 844) pos.y = -size.h * scale + 844;
+        if(pos.y < -size.h * scale + 844) pos.y = -size.h * scale + 844;
 
-        target.css('transform','translate('+(pos.x)+'px,'+(pos.y)+'px) scale('+scale+','+scale+')')
+        target.css('transform', 'translate(' + pos.x + 'px,' + pos.y + 'px) scale(' + scale + ', ' + scale + ')');
+    }
+
+    function movedLenta(event){
+        if(drag_startedLenta == 1) {
+            var current_mouse_positionLenta = { x: event.pageX, y: event.pageY};
+            var change_y = current_mouse_positionLenta.y - last_mouse_positionLenta.y;
+
+            last_mouse_positionLenta = current_mouse_positionLenta;
+            posLenta.y = posLenta.y += change_y;
+			isMovedLenta = 1;
+
+        updateLenta();
+        }
+    }
+
+    function updateLenta(){
+        if(posLenta.y < -sizeLenta.h + 844) posLenta.y = -sizeLenta.h + 844;
+        lenta.css('transform', 'translate(0px, ' + posLenta.y + 'px)');
+		if (posLenta.y > 600){
+			lenta.css({'transition': 'transform .6s', 'transform': 'translate(0px, 844px)'});
+			history.back();
+		}
     }
 }
-
+	
 </script>
+	
 </head>
+	
 <body>
-<div id="main" style="position:relative; width: 437px; height: 882px; margin: 0 auto;">
-<div id="container" style="position:absolute; width: 390px; height: 844px; overflow: hidden; top:38px; left: 24px; margin:19 auto;">
-	<div id="slide" style="position:absolute; width:390px; height:844px; top: 0px; transition: transform .6s; transform : translateY(844px);">
-
-		<img class="plan" src="img/LentaJuice.png" alt="" style="pointer-events: none;">
-
+<div id="main" draggable="false">
+<div class="header">
+	<div><a href="main.html" class="href">MAIN</a></div>
+  	<div><a href="about.html" class="href">ABOUT</a></div>
+  	<div><a href="contacts.html" class="href">CONTACTS</a></div>
+</div>
+<div class="loader"><div class="ld">
+<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div></div>
+<div id="container" draggable="false">
+	<div id="slide">
+		<img id="stellage2d" src="img/stellage/juices.jpg" alt="Stellage" style="pointer-events: none;" draggable="false">
 	</div>
 </div>
-<div id="bottomButtons" style="position:absolute; height: 57px; width: 390px; z-index: 2; left:24px; top:824px; background-color: #FFFFFF;">
-	<img alt="home" src="img/buttons/bbuttons.png"/>
-	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" style="left:23px; top:8px;"/>
-	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" style="left:98px; top:8px;"/>
-	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" style="left:173px; top:8px;"/>
-	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" style="left:248px; top:8px;"/>
-	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" style="left:323px; top:8px;"/>
+<div id="container2" draggable="false">
+	<div id="lenta">
+		<img src="img/product/lentaPerc1.jpg" alt="" style="pointer-events: none;">
+		<div class="productName" style="top:12px; left: 15px; font-size: 22px;">Product Name</div>
+		<div class="rating" style="top:50px; left: 15px;"><img src="img/buttons/rate4.png" alt=""/><span style="margin-left: 15px;"><span id="nReviews">10</span> reviews</span><a href="#" style="margin-left: 15px; color: #33A0FF; font-size: 16px; font-weight: 300; text-decoration: none">Submit a review</a></div>
+		<div class="priceOld" style="top:85px; left: 15px; font-size: 18px; text-decoration: line-through; color: #333333;">&nbsp;$20&nbsp;</div>
+		<div class="price" style="top:110px; left: 15px; font-size: 30px; font-weight: 400; color: #aa0000;">$9.50</div>
+		
+		<div id="productButtons">
+			<div id="countButton"><a href="#" id="minus">-</a><span id="cnt">0</span><a href="#" id="plus">+</a></div>
+			<button id="addToCartButton"></button>
+			<button id="heartButton"></button>
+		</div>
+	</div>
+	<div id="shadowWindow" class="hole"></div>
 </div>
-<div id="phoneFrame" style="position:absolute; z-index: 3; left:0; top:19px; pointer-events: none;">
-	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%; pointer-events: none;"/>
+<div id="bottomButtons" draggable="false">
+	<div id="clock"></div>
+	<div id="battery" class="bw"></div>
+	<div id="backButton">
+		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 	viewBox="0 0 6.23 10.52" style="enable-background:new 0 0 6.23 10.52; display: inline-block; width: 8px; vertical-align: middle;" xml:space="preserve">
+		<style type="text/css">
+			.st0{fill:none;stroke:#ffffff;stroke-linecap:round;}
+		</style>
+		<g>
+			<path class="st0" d="M5.73,10.02l-5-4.77l5-4.75"/>
+		</g>
+		</svg>&nbsp;&nbsp;&nbsp;Back
+	</div>
+	<img alt="home" src="img/buttons/bbuttons.png"/>
+	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
+	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
+	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
+	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
+	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
+</div>
+<div id="phoneFrame">
+	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%"/>
 </div>
 
 </div>

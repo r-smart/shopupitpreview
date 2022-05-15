@@ -8,12 +8,12 @@
 	100% { opacity: 1;}
 }
 #clock{
-	top: -770px;
-	left: 50px;
+	top: -773px;
+	left: 45px;
 	color: #ffffff;
-	z-index:7;
+	z-index: 20;
 	position:absolute;
 	font-family: "Poppins", sans-serif;
 	font-style: normal;
-	font-size: 11px;
+	font-size: 14px;
 }

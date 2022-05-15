@@ -16,6 +16,22 @@ body {
 	background: url("img/Floor Texture 2 (0-00-00-00).png");
 }
 	
+#slide {
+	position:absolute;
+	width:auto;
+	height:auto;
+	min-height: 844px;
+	top: 0px;
+	transform: translate(-190px, 844px);
+	transition: transform .6s;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
 .game {
 	position:absolute;
 	z-index: 1;
@@ -54,7 +70,7 @@ body {
 	z-index: 2;
 }
 
-#stellageImg {
+#stellage2d {
 	 visibility: hidden;
 }
 
@@ -67,17 +83,19 @@ body {
 $(imgs).each(function(){
 	new Image().src = "img/stellage/" + this;
 	});
-})(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices_eggs.jpg", "meat1.jpg", "meat2.jpg", "milk.jpg", "spices.jpg", "t.txt", "vegetables.jpg", "vegetables2.jpg"]);
-	
+})(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices2.jpg", "eggs.jpg", "meat1.jpg", "meat2.jpg", "milk.jpg", "spices.jpg", "vegetables.jpg", "vegetables2.jpg"]);
+
+var stellageFName = "stellage3.html";
+var planFName = "plan_v5.html";
 var params = window.location.search;
 var fname = (params.charAt(0) == "?") ? params.split("=")[1] + ".jpg" : "fruits.jpg";
-var pos = {x:-900, y:0}
+var pos = {x:-190, y:-1000}
 var scale = 1;
 //var t0 = new Date().getTime();
 
 function onLoadActions(){
 	$('.loader').fadeOut(300, function(){$(this).remove()});
-	$('#container').children().first().css('transform','translateX('+(pos.x)+'px) scale('+scale+','+scale+')');
+	$('#container').children().first().css('transform','translate(' + pos.x + 'px, ' + pos.y +'px) scale('+scale+','+scale+')');
 }
 	
 $(window).on('load', function(){
@@ -100,10 +118,10 @@ function ScrollZoom(container,max_scale,factor){
 	var isMoved = 0;
 
 	$('title').text(fname);
-	$("#stellageImg").attr('src', "img/stellage/" + fname);
-	$("#stellageImg").attr('data-page', "img/stellage/" + fname);
-	$("#stellageImg").css('visibility', 'visible');
-	$("#stellageImg").on('click', function() {
+	$("#stellage2d").attr('src', "img/stellage/" + fname);
+	$("#stellage2d").attr('data-page', "img/stellage/" + fname);
+	$("#stellage2d").css('visibility', 'visible');
+	$("#stellage2d").on('click', function() {
 		console.log(isMoved)
         if(!isMoved) location = "product.html?n=" + fname;
 	})
@@ -128,30 +146,6 @@ function ScrollZoom(container,max_scale,factor){
         /* Save mouse position */
         last_mouse_position = { x: event.pageX, y: event.pageY};
     });
-		
-  	$(".game, .perc").on('mouseover', function() {
-        $(this).css({'cursor':'pointer'});
-    });
-	
-  	$(".game, .perc").on('mouseout', function() {
-        $(this).css({'cursor':'auto'});
-    });
-		
-    $(".game, .perc").on('click', function() {
-        if(!isMoved) location = "game.html?n=" + this.dataset.page;
-    });
-
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'opacity':'100'});
-    });
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'opacity':'0'});
-    });
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('click', function() {
-        location = this.dataset.page + ".html";
-    });
 
     target.on('mouseup', function() {
         drag_started = 0;
@@ -168,6 +162,42 @@ function ScrollZoom(container,max_scale,factor){
 
     target.on('mouseout', function() {
         drag_started = 0;
+    });		
+  	$(".game, .perc").on('mouseover', function() {
+        $(this).css({'cursor':'pointer'});
+    });
+	
+  	$(".game, .perc").on('mouseout', function() {
+        $(this).css({'cursor':'auto'});
+    });
+		
+    $(".game, .perc").on('click', function() {
+        if(!isMoved) location = "game.html?n=" + this.dataset.page;
+    });
+			
+  	$("#bottomButtons").children(".bbutt").on('mouseover', function() {
+        $(this).css({'cursor':'pointer', 'opacity':'100'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('mouseout', function() {
+        $(this).css({'cursor':'auto', 'opacity':'0'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('click', function() {
+        location = this.dataset.page + ".html";
+    });
+
+			
+  	$("#backButton").on('mouseover', function() {
+        $(this).css('cursor', 'pointer');
+    });
+	
+  	$("#backButton").on('mouseout', function() {
+        $(this).css('cursor','auto');
+    });
+		
+  	$("#backButton").on('click', function() {
+        location = planFName;
     });
 
     function scrolled(e){
@@ -244,7 +274,7 @@ function ScrollZoom(container,max_scale,factor){
 </div></div>
 <div id="container" draggable="false">
 	<div id="slide">
-		<img id="stellageImg" src="img/stellage/fruits.jpg" alt="placeholder" style="pointer-events: none;" draggable="false"/>
+		<img id="stellage2d" src="img/stellage/fruits.jpg" alt="placeholder" style="pointer-events: none;" draggable="false"/>
 		<div class="game" style="left:350px; top:370px;">
 			<img alt="" src="img/buttons/kubik_pl3.png"/>
 		 	<video loop autoplay muted preload="auto">
@@ -297,6 +327,18 @@ function ScrollZoom(container,max_scale,factor){
 </div>
 <div id="bottomButtons">
 	<div id="clock"></div>
+	<div id="battery" class="bw"></div>
+	<div id="backButton">
+		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 	viewBox="0 0 6.23 10.52" style="enable-background:new 0 0 6.23 10.52; display: inline-block; width: 8px; vertical-align: middle;" xml:space="preserve">
+		<style type="text/css">
+			.st0{fill:none;stroke:#ffffff;stroke-linecap:round;}
+		</style>
+		<g>
+			<path class="st0" d="M5.73,10.02l-5-4.77l5-4.75"/>
+		</g>
+		</svg>&nbsp;&nbsp;&nbsp;Back
+	</div>
 	<img alt="home" src="img/buttons/bbuttons.png"/>
 	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
 	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>

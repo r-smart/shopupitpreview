@@ -4,22 +4,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Email template By Adobe Dreamweaver</title>
+<title>Shoupit</title>
+	
+<link rel="shortcut icon" href="#">
 <link href="css/PLAN_1-5.css" rel="stylesheet" type="text/css">
+<link href="css/loader.css" rel="stylesheet" type="text/css">
+<link href="css/UI.css" rel="stylesheet" type="text/css">
+<link href="css/clock.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+	
 <style type="text/css">
 
 body {
-	font-family: sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	margin: 0;
 	background: url("img/Floor Texture 2 (0-00-00-00).png");
-}
-	
-#slide{
-  width:100%;
-  height:100%;
-  transition: transform .3s;
 }
 	
 .plan {
@@ -30,14 +31,22 @@ body {
 	height: auto;
 }
 	
-.bbutt {
+#slide {
 	position:absolute;
-	z-index: 1;
-	visibility: hidden;
-	transition: opacity: .3s;
+	width:4000px;
+	height:4000px;
+	top: 0px;
+	transform: translate(0px, 844px);
+	transition: transform .6s;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 	
-.stellage{
+.stellage3d{
 	z-index: 1;
 	position: absolute;
 	opacity: 0;
@@ -93,52 +102,64 @@ body {
 }
 
 </style>
+	
 <script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
+<script src="lib/clock.js" type="text/javascript"></script>	
 <script type="text/javascript">
+	
+(function preload(imgs) {
+$(imgs).each(function(){
+	new Image().src = "img/stellage/" + this;
+	});
+})(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices2.jpg", "eggs.jpg", "meat1.jpg", "meat2.jpg", "milk.jpg", "spices.jpg", "vegetables.jpg", "vegetables2.jpg"]);
+
+var stellageFName = "stellage4.html";
+var planFName = "plan_v5.html";
+var productFName = "product.html";
+var initScale = .098;
+var initX = 0;
+var initY = 230;
+var params = window.location.search;
+var fname = (params.charAt(0) == "?") ? params.split("=")[1] + ".jpg" : "fruits.jpg";
+
+function onLoadActions(){
+	$('.loader').fadeOut(300, function(){
+		$(this).remove();
+		$(".game>video").each(function(){$(this).get(0).play();});
+		$(".perc>video").each(function(){$(this).get(0).play();});
+	});
+	var pos = {x: initX, y: initY};
+	var scale = initScale;
+	$('#container').children().first().css('transform','translate(' + pos.x + 'px, ' + pos.y +'px) scale('+scale+','+scale+')');
+}
+	
+$(window).on('load', function(){
+	setTimeout(onLoadActions, 1000); 
+});
+
 $(document).ready(function (){
     var scroll_zoom = new ScrollZoom($('#container'),2,0.1);
 })
-function ScrollZoom(container,max_scale,factor){
-    var target = container.children().first()
-    var size = {w:target.width(),h:target.height()}
-    var pos = {x:-291,y:0}
-    var scale = .25;
-    var zoom_target = {x:0,y:0}
-    var zoom_point = {x:0,y:0}
-    var curr_tranform = target.css('transition')
-    var last_mouse_position = { x:0, y:0 }
-    var drag_started = 0
-	var isMoved = 0
-	var curr;
-	var notFirstChildStr = ":not(:first-child)";
-	
-//	$('video')[0].autoplay = true;
-//	$('video')[0].play();
-	
-//	console.log($("#phoneFrame").children(notFirstChildStr))
-	
-//	for (var i = 0; i < bbs.length; i++){
-//		console.log(i + ": " + bbs[i].id)
-//	}
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'opacity':'100'});
-    });
-	
-  	$("#bottomButtons").children(":not(:first-child)").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'opacity':'0'});
-    });
 
-	//alert(fr[0].id)
+function ScrollZoom(container,max_scale,factor){
+    var target = container.children().first();
+	var pos = {x: initX, y: initY};
+	var scale = initScale;
+    var size = {w: target.width(), h: target.height()};
+    var zoom_target = {x:0, y:0};
+    var zoom_point = {x:0, y:0};
+    var last_mouse_position = { x:0, y:0 };
+    var drag_started = 0;
+	var isMoved = 0;
 	
-    target.css('transform-origin','0 0')
-    target.on("mousewheel DOMMouseScroll",scrolled)
-    target.on('mousemove', moved)
+	target.css('transform', 'translate(' + pos.x + 'px, ' + pos.y + 'px) scale(' + scale + ', ' + scale + ')');
+    target.css('transform-origin', '0 0');
+    target.on("mousewheel DOMMouseScroll", scrolled);
+    target.on('mousemove', moved);
     target.on('mousedown', function() {
         drag_started = 1;
 		isMoved = 0;
         target.css({'cursor':'move', 'transition': 'transform 0s'});
-        /* Save mouse position */
         last_mouse_position = { x: event.pageX, y: event.pageY};
     });
 
@@ -147,48 +168,84 @@ function ScrollZoom(container,max_scale,factor){
 		target.children(":not(:first-child)").css({'transition': 'transform .3s'});
     });
 
-    target.children(".stellage").on('mouseover', function() {
+    target.children(".stellage3d").on('mouseover', function() {
         $(this).css({'cursor':'pointer', 'opacity':'100'});
     });
 
-    target.children(".stellage").on('mouseout', function() {
+    target.children(".stellage3d").on('mouseout', function() {
         $(this).css({'cursor':'auto', 'opacity':'0'});
     });
 
+    target.children(".stellage3d").on('click', function() {
+        if(!isMoved) location = stellageFName + "?n=" + this.dataset.page;
+    });
+	
     target.on('mouseout', function() {
         if(target.id == "slide") drag_started = 0;
     });
+	
+  	$("#bottomButtons").children(".bbutt").on('mouseover', function() {
+        $(this).css({'cursor':'pointer', 'opacity':'100'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('mouseout', function() {
+        $(this).css({'cursor':'auto', 'opacity':'0'});
+    });
+	
+  	$("#bottomButtons").children(".bbutt").on('click', function() {
+        location = this.dataset.page + ".html";
+    });
+			
+  	$("#backButton").on('mouseover', function() {
+        $(this).css('cursor', 'pointer');
+    });
+	
+  	$("#backButton").on('mouseout', function() {
+        $(this).css('cursor','auto');
+    });
+		
+  	$("#backButton").on('click', function() {
+        location = planFName;
+    });
 
-    target.children(".stellage").on('click', function() {
-        if(!isMoved) location = "stellage2.html?n=" + this.dataset.page;
+  	$(".game, .perc").on('mouseover', function() {
+        $(this).css({'cursor':'pointer'});
+    });
+	
+  	$(".game, .perc").on('mouseout', function() {
+        $(this).css({'cursor':'auto'});
+    });
+		
+    $(".game").on('click', function() {
+        if(!isMoved) location = "game.html?n=" + this.dataset.page;
+    });
+			
+    $(".perc").on('click', function() {
+        if(!isMoved) location = productFName + "?n=" + this.dataset.page;
     });
 
     function scrolled(e){
-        var offset = container.offset()
-        zoom_point.x = e.pageX - offset.left
-        zoom_point.y = e.pageY - offset.top
+        var offset = container.offset();
+        zoom_point.x = e.pageX - offset.left;
+        zoom_point.y = e.pageY - offset.top;
 
         e.preventDefault();
         var delta = e.deltaY || e.originalEvent.wheelDelta;
         if (delta === undefined) {
-          //we are on firefox
           delta = e.originalEvent.detail;
         }
-        delta = -1 * Math.max(-1,Math.min(1,delta)) // cap the delta to [-1,1] for cross browser consistency
+        delta = -1 * Math.max(-1,Math.min(1,delta));
 
-        // determine the point on where the slide is zoomed in
-        zoom_target.x = (zoom_point.x - pos.x)/scale
-        zoom_target.y = (zoom_point.y - pos.y)/scale
+        zoom_target.x = (zoom_point.x - pos.x)/scale;
+        zoom_target.y = (zoom_point.y - pos.y)/scale;
 
-        // apply zoom
-        scale -= delta * factor * scale
-        scale = Math.max(.25,Math.min(max_scale,scale))
+        scale -= delta * factor * scale;
+        scale = Math.max(initScale,Math.min(max_scale,scale));
 
-        // calculate x and y based on zoom
-        pos.x = -zoom_target.x * scale + zoom_point.x
-        pos.y = -zoom_target.y * scale + zoom_point.y
+        pos.x = -zoom_target.x * scale + zoom_point.x;
+        pos.y = -zoom_target.y * scale + zoom_point.y;
 
-        update()
+        update();
     }
 
     function moved(event){
@@ -197,309 +254,322 @@ function ScrollZoom(container,max_scale,factor){
             var change_x = current_mouse_position.x - last_mouse_position.x;
             var change_y = current_mouse_position.y - last_mouse_position.y;
 
-            /* Save mouse position */
             last_mouse_position = current_mouse_position;
-            //Add the position change
             pos.x += change_x;
             pos.y += change_y;
 			isMoved = 1;
-			//target.css({'pointer-events': 'auto'});
-			
 
-        update()
+        update();
         }
-		//console.log(drag_started)
     }
 
     function update(){
 		if(pos.x > 0) pos.x = 0;
         if(pos.x < -size.w * scale + 390) pos.x = -size.w * scale + 390;
-        if(pos.y > 0) pos.y = 0;
-        if(pos.y < -size.h*scale + 844) pos.y = -size.h * scale + 844;
+		if(scale > .2){
+			if(pos.y > 0) pos.y = 0;
+			if(pos.y < -size.h*scale + 844) pos.y = -size.h * scale + 844;
+		}
+		else{
+			if(pos.y < 0) pos.y = 0;
+			else if (pos.y > 844 - size.h*scale) pos.y = -size.h * scale + 844;
+		}
 
         target.css('transform','translate('+(pos.x)+'px,'+(pos.y)+'px) scale('+scale+','+scale+')');
-//		console.log(scale)
+		$("#matrasBG").children().fadeOut(1000, function(){
+			$(this).remove();
+		});
+		
 		if(scale > .4) $(".l3").css('visibility', 'visible');
 		else $(".l3").css('visibility', 'hidden');
 		if(scale > .3) $(".l2").css('visibility', 'visible');
 		else $(".l2").css('visibility', 'hidden');
     }
-	target.css('transform','translateX('+(pos.x)+'px) scale('+scale+','+scale+')');
 }
 
-(function preload(imgs) {
-	$(imgs).each(function(){
-        (new Image()).src = "img/PLAN/layers/" + this;
-    });
-})(["_0001_bread.png", "_0002_meat2.png", "_0003_meat1.png", "_0004_spices.png", "_0005_juices1.png", "_0006_eggs.png", "_0007_fresh.png", "_0008_canned.png", "_0009_Fruits.png", "_0010_breakfasts.png", "_0011_sauces.png", "_0012_juices2.png", "_0013_juices3.png", "_0014_frozen.png", "_0015_fish2.png", "_0016_greens.png", "_0017_greens2.png", "_0018_vegetables.png", "_0019_dairy.png", "_0020_beer.png", "_0021_fish.png", "_0022_milk.png"]);
-	
 </script>
 </head>
 <body>
-<div id="main" style="position:relative; width: 437px; height: 882px; margin: 0 auto;">
-<div id="container" style="position:absolute; width: 390px; height: 844px; overflow: hidden; top:38px; left: 24px; margin:19 auto;">
-	<div id="slide" style="position:absolute; width:4000px; height:4000px; top: 0px; transition: transform .3s; -webkit-user-select: none;">
+<div id="main" draggable="false">
+	<div class="header">
+		<div><a href="main.html" class="href">MAIN</a></div>
+		<div><a href="about.html" class="href">ABOUT</a></div>
+		<div><a href="contacts.html" class="href">CONTACTS</a></div>
+	</div>
+	<div class="loader">
+		<div class="ld">
+			<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+		</div>
+	</div>
+	<div id="matrasBG" draggable="false">
+		<img src="img/matras.jpg" style="position: absolute; top: 0px;">
+		<div style="position: absolute; top: 0px; width: 100%; text-align: center; font-size: 30px; font-weight: bold; margin-top: 110px; color:#0084FF; ">MOVE&nbsp; &amp; &nbsp;ZOOM</div>
+	</div>
+<div id="container" draggable="false">
+	<div id="slide">
 
 		<img class="plan" src="img/PLAN/PLAN_1.jpg" alt="" style="pointer-events: none;">
 
-		<img id="bread" class="stellage" data-page="bread" src="img/PLAN/layers/_0001_bread.png" alt="Bread" style="" draggable="false"/>	
+		<img id="bread" class="stellage3d" data-page="bread" src="img/PLAN/layers/_0001_bread.png" alt="Bread" style="" draggable="false"/>	
 
-		<img id="meat1" class="stellage" data-page="meat1" src="img/PLAN/layers/_0003_meat1.png" alt="Meat" style="" draggable="false"/>
+		<img id="meat1" class="stellage3d" data-page="meat1" src="img/PLAN/layers/_0003_meat1.png" alt="Meat" style="" draggable="false"/>
 
-		<img id="meat2" class="stellage" data-page="meat1" src="img/PLAN/layers/_0002_meat2.png" alt="Meat" sstyle="" draggable="false"/>
+		<img id="meat2" class="stellage3d" data-page="meat1" src="img/PLAN/layers/_0002_meat2.png" alt="Meat" sstyle="" draggable="false"/>
 
-		<img id="spices" class="stellage" data-page="spices" src="img/PLAN/layers/_0004_spices.png" alt="Spices" style="" draggable="false"/>
+		<img id="spices" class="stellage3d" data-page="spices" src="img/PLAN/layers/_0004_spices.png" alt="Spices" style="" draggable="false"/>
 
-		<img id="juices1" class="stellage" data-page="juices" src="img/PLAN/layers/_0005_Juices1.png" alt="Juices" style="" draggable="false"/>
+		<img id="juices1" class="stellage3d" data-page="juices" src="img/PLAN/layers/_0005_Juices1.png" alt="Juices" style="" draggable="false"/>
 
-		<img id="eggs" class="stellage" data-page="juices_eggs" src="img/PLAN/layers/_0006_eggs.png" alt="Eggs" style="" draggable="false"/>
+		<img id="eggs" class="stellage3d" data-page="eggs" src="img/PLAN/layers/_0006_eggs.png" alt="Eggs" style="" draggable="false"/>
 
-		<img id="canned" class="stellage" data-page="canned" src="img/PLAN/layers/_0008_canned.png" alt="Canned" style="" draggable="false"/>
+		<img id="canned" class="stellage3d" data-page="canned" src="img/PLAN/layers/_0008_canned.png" alt="Canned" style="" draggable="false"/>
 
-		<img id="fresh" class="stellage" data-page="greens" src="img/PLAN/layers/_0007_fresh.png" alt="Fresh" style="" draggable="false"/>
+		<img id="fresh" class="stellage3d" data-page="fresh" src="img/PLAN/layers/_0007_fresh.png" alt="Fresh" style="" draggable="false"/>
 
-		<img id="fruits" class="stellage" data-page="fruits" src="img/PLAN/layers/_0009_Fruits.png" alt="Fruits" style="" draggable="false"/>
+		<img id="fruits" class="stellage3d" data-page="fruits" src="img/PLAN/layers/_0009_Fruits.png" alt="Fruits" style="" draggable="false"/>
 
-		<img id="breakfasts" class="stellage" data-page="breakfasts" src="img/PLAN/layers/_0010_breakfasts.png" alt="Breakfasts" style="" draggable="false"/>
+		<img id="breakfasts" class="stellage3d" data-page="breakfasts" src="img/PLAN/layers/_0010_breakfasts.png" alt="Breakfasts" style="" draggable="false"/>
 
-		<img id="sauces" class="stellage" data-page="sauces" src="img/PLAN/layers/_0011_sauces.png" alt="Sauces" style="" draggable="false"/>
+		<img id="sauces" class="stellage3d" data-page="sauces" src="img/PLAN/layers/_0011_sauces.png" alt="Sauces" style="" draggable="false"/>
 
-		<img id="juices2" class="stellage" data-page="juices" src="img/PLAN/layers/_0012_juices2.png" alt="Juices" style="" draggable="false"/>
+		<img id="juices2" class="stellage3d" data-page="juices" src="img/PLAN/layers/_0012_juices2.png" alt="Juices" style="" draggable="false"/>
 
-		<img id="juices3" class="stellage" data-page="juices" src="img/PLAN/layers/_0013_juices3.png" alt="Juices" style="" draggable="false"/>
+		<img id="juices3" class="stellage3d" data-page="juices" src="img/PLAN/layers/_0013_juices3.png" alt="Juices" style="" draggable="false"/>
 
-		<img id="frozen" class="stellage" data-page="frozen" src="img/PLAN/layers/_0014_frozen.png" alt="Frozen" style="" draggable="false"/>
+		<img id="frozen" class="stellage3d" data-page="frozen" src="img/PLAN/layers/_0014_frozen.png" alt="Frozen" style="" draggable="false"/>
 
-		<img id="fish2" class="stellage" data-page="juices_eggs" src="img/PLAN/layers/_0015_fish2.png" alt="Fish" style="" draggable="false"/>
+		<img id="fish2" class="stellage3d" data-page="juices2" src="img/PLAN/layers/_0015_fish2.png" alt="Fish" style="" draggable="false"/>
 
-		<img id="greens" class="stellage" data-page="greens" src="img/PLAN/layers/_0016_greens.png" alt="Greens" style="" draggable="false"/>
+		<img id="greens" class="stellage3d" data-page="greens" src="img/PLAN/layers/_0016_greens.png" alt="Greens" style="" draggable="false"/>
 
-		<img id="greens2" class="stellage" data-page="greens2" src="img/PLAN/layers/_0017_greens2.png" alt="Greens" style="" draggable="false"/>
+		<img id="greens2" class="stellage3d" data-page="greens2" src="img/PLAN/layers/_0017_greens2.png" alt="Greens" style="" draggable="false"/>
 
-		<img id="vegetables" class="stellage" data-page="vegetables" src="img/PLAN/layers/_0018_vegetables.png" alt="Vegetables" style="" draggable="false"/>
+		<img id="vegetables" class="stellage3d" data-page="vegetables" src="img/PLAN/layers/_0018_vegetables.png" alt="Vegetables" style="" draggable="false"/>
 
-		<img id="dairy" class="stellage" data-page="dairy" src="img/PLAN/layers/_0019_dairy.png" alt="Dairy" style="" draggable="false"/>
+		<img id="dairy" class="stellage3d" data-page="dairy" src="img/PLAN/layers/_0019_dairy.png" alt="Dairy" style="" draggable="false"/>
 
-		<img id="beer" class="stellage" data-page="beer" src="img/PLAN/layers/_0020_beer.png" alt="Beer" style="" draggable="false"/>
+		<img id="beer" class="stellage3d" data-page="beer" src="img/PLAN/layers/_0020_beer.png" alt="Beer" style="" draggable="false"/>
 
-		<img id="fish" class="stellage" data-page="juices_eggs" src="img/PLAN/layers/_0021_fish.png" alt="Fish" style="" draggable="false"/>
+		<img id="fish" class="stellage3d" data-page="juices_eggs" src="img/PLAN/layers/_0021_fish.png" alt="Fish" style="" draggable="false"/>
 
-		<img id="milk" class="stellage" data-page="milk" src="img/PLAN/layers/_0022_milk.png" alt="Milk" style="" draggable="false"/>
+		<img id="milk" class="stellage3d" data-page="milk" src="img/PLAN/layers/_0022_milk.png" alt="Milk" style="" draggable="false"/>
 		
 		<div class="game" style="left:1600px; top:280px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game" style="left:1100px; top:880px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game" style="left:2400px; top:1300px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game" style="left:2800px; top:900px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game" style="left:1500px; top:1880px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 
 		<div class="perc" style="left:950px; top:550px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc" style="left:2150px; top:520px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc" style="left:2300px; top:2220px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 <!--LEVEL 2	-->	
 		<div class="game l2" style="left:2300px; top:580px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l2" style="left:2050px; top:880px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l2" style="left:1600px; top:1400px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l2" style="left:2150px; top:2380px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l2" style="left:1100px; top:2380px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l2" style="left:2300px; top:580px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 
 		<div class="perc l2" style="left:1950px; top:150px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc l2" style="left:1000px; top:950px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc l2" style="left:1350px; top:1250px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc l2" style="left:2050px; top:1800px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="perc l2" style="left:2000px; top:2970px;">
 			<img alt="" src="img/buttons/percentSite.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 <!--LEVEL 3	-->	
 		<div class="game l3" style="left:800px; top:300px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2800px; top:280px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:1000px; top:600px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:580px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2800px; top:680px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:950px; top:2990px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2400px; top:3050px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:1500px; top:3150px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:1880px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:1100px; top:1250px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:1290px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:1290px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:1290px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 		<div class="game l3" style="left:2300px; top:1290px;">
 			<img alt="Play Game" src="img/buttons/kubik_pl3.png"/>
-		 	<video loop autoplay muted preload="auto">
+		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/kubic_rot.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
 	</div>
 </div>
-<div id="bottomButtons" style="position:absolute; height: 57px; width: 390px; z-index: 2; left:24px; top:824px; background-color: #FFFFFF;">
+<div id="bottomButtons">
+	<div id="clock" style="color: #000000"></div>
+	<div id="battery" class="bk"></div>
 	<img alt="home" src="img/buttons/bbuttons.png"/>
-	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" style="left:23px; top:8px;"/>
-	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" style="left:98px; top:8px;"/>
-	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" style="left:173px; top:8px;"/>
-	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" style="left:248px; top:8px;"/>
-	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" style="left:323px; top:8px;"/>
+	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
+	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
+	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
+	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
+	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
 </div>
-<div id="phoneFrame" style="position:absolute; z-index: 3; left:0; top:19px; pointer-events: none;">
-	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%; pointer-events: none;"/>
+<div id="phoneFrame">
+	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%"/>
 </div>
 
 </div>
