@@ -112,16 +112,31 @@ $(imgs).each(function(){
 	new Image().src = "img/stellage/" + this;
 	});
 })(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices2.jpg", "eggs.jpg", "meat1.jpg", "meat2.jpg", "milk.jpg", "spices.jpg", "vegetables.jpg", "vegetables2.jpg"]);
+	
+var urlParams = {};
+(function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
 
-var stellageFName = "stellage4.html";
-var planFName = "plan_v5.html";
+	while (match = search.exec(query)) urlParams[decode(match[1])] = decode(match[2]);
+})();
+
+var stellageFName = "stellage5.html";
+var gameFName = "game.html";
 var productFName = "product.html";
+var currPageName = "plan_v5";
+var currFName = currPageName + ".html";
+var stellageName = ("st" in urlParams) ? urlParams["st"] : "fruits";
+//var stellageURLStr = "?st=" + productName + "&r=" + currPageName;
+//var productURLStr = "?pr=" + productName + "&r=" + currPageName + "&perc=1";
+//var gameURLStr = "?r=" + currPageName;
 var initScale = .098;
 var initX = 0;
 var initY = 230;
-var params = window.location.search;
-var fname = (params.charAt(0) == "?") ? params.split("=")[1] + ".jpg" : "fruits.jpg";
-
+	
 function onLoadActions(){
 	$('.loader').fadeOut(300, function(){
 		$(this).remove();
@@ -167,62 +182,41 @@ function ScrollZoom(container,max_scale,factor){
         drag_started = 0;
 		target.children(":not(:first-child)").css({'transition': 'transform .3s'});
     });
-
-    target.children(".stellage3d").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'opacity':'100'});
-    });
-
-    target.children(".stellage3d").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'opacity':'0'});
-    });
-
-    target.children(".stellage3d").on('click', function() {
-        if(!isMoved) location = stellageFName + "?n=" + this.dataset.page;
-    });
 	
     target.on('mouseout', function() {
         if(target.id == "slide") drag_started = 0;
     });
-	
-  	$("#bottomButtons").children(".bbutt").on('mouseover', function() {
-        $(this).css({'cursor':'pointer', 'opacity':'100'});
+
+    target.children(".stellage3d").on('click', function() {
+        if(!isMoved) location = stellageFName + "?st=" + this.dataset.page;
     });
-	
-  	$("#bottomButtons").children(".bbutt").on('mouseout', function() {
-        $(this).css({'cursor':'auto', 'opacity':'0'});
-    });
-	
+
   	$("#bottomButtons").children(".bbutt").on('click', function() {
         location = this.dataset.page + ".html";
     });
-			
-  	$("#backButton").on('mouseover', function() {
-        $(this).css('cursor', 'pointer');
-    });
-	
-  	$("#backButton").on('mouseout', function() {
-        $(this).css('cursor','auto');
-    });
-		
-  	$("#backButton").on('click', function() {
-        location = planFName;
-    });
-
-  	$(".game, .perc").on('mouseover', function() {
-        $(this).css({'cursor':'pointer'});
-    });
-	
-  	$(".game, .perc").on('mouseout', function() {
-        $(this).css({'cursor':'auto'});
-    });
 		
     $(".game").on('click', function() {
-        if(!isMoved) location = "game.html?n=" + this.dataset.page;
+        if(!isMoved) location = gameFName + "?r=" + currPageName;
     });
 			
     $(".perc").on('click', function() {
-        if(!isMoved) location = productFName + "?n=" + this.dataset.page;
+        if(!isMoved) location = productFName + "?pr=" + this.dataset.page + "&r=" + currPageName;
     });
+
+    target.children(".stellage3d").hover(
+		function() { $(this).css({'cursor':'pointer', 'opacity':'100'}) },
+		function() { $(this).css({'cursor':'auto', 'opacity':'0'}) }
+	);
+	
+  	$(".game, .perc").hover(
+		function() { $(this).css("cursor", "pointer")},
+		function() { $(this).css("cursor", "auto")}
+   	);
+		
+  	$("#bottomButtons").children(".bbutt").hover(
+		function() { $(this).css({'cursor':'pointer', 'opacity':'100'});},
+		function() { $(this).css({'cursor':'auto', 'opacity':'0'})}
+    );
 
     function scrolled(e){
         var offset = container.offset();
@@ -385,19 +379,19 @@ function ScrollZoom(container,max_scale,factor){
 			</video> 
 		</div>
 
-		<div class="perc" style="left:950px; top:550px;">
+		<div class="perc" style="left:950px; top:550px;" data-page="spices">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc" style="left:2150px; top:520px;">
+		<div class="perc" style="left:2150px; top:520px;"  data-page="juices">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc" style="left:2300px; top:2220px;">
+		<div class="perc" style="left:2300px; top:2220px;" data-page="greens">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
@@ -441,31 +435,31 @@ function ScrollZoom(container,max_scale,factor){
 			</video> 
 		</div>
 
-		<div class="perc l2" style="left:1950px; top:150px;">
+		<div class="perc l2" style="left:1950px; top:150px;" data-page="meat">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc l2" style="left:1000px; top:950px;">
+		<div class="perc l2" style="left:1000px; top:950px;" data-page="canned">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc l2" style="left:1350px; top:1250px;">
+		<div class="perc l2" style="left:1350px; top:1250px;" data-page="fruits">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc l2" style="left:2050px; top:1800px;">
+		<div class="perc l2" style="left:2050px; top:1800px;" data-page="juices">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
 			</video> 
 		</div>
-		<div class="perc l2" style="left:2000px; top:2970px;">
+		<div class="perc l2" style="left:2000px; top:2970px;" data-page="greens">
 			<img alt="" src="img/buttons/percentSite.png"/>
 		 	<video loop muted preload="auto">
 		  	<source src="img/buttons/percentSite.mp4" type="video/mp4">Your browser does not support the video tag.
