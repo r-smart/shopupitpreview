@@ -9,14 +9,12 @@
 <link href="css/loader.css" rel="stylesheet" type="text/css">
 <link href="css/lenta.css" rel="stylesheet" type="text/css">
 <link href="css/UI.css" rel="stylesheet" type="text/css">
-<link href="css/clock.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
 <style type="text/css">
 </style>
 	
 <script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
-<script src="lib/clock.js" type="text/javascript"></script>
 <script src="lib/lenta.js" type="text/javascript"></script>
 	
 <script type="text/javascript">
@@ -38,9 +36,11 @@ var stellageFName = "stellage5.html";
 var planFName = "plan_v5.html";
 var currPageName = "product";
 var currFName = currPageName + ".html";
+var initG = 1;
 var productNameStr = ("pr" in urlParams) ? urlParams["pr"] : "fruits";
+var paramG = ("g" in urlParams) ? urlParams["g"] : initG;
 var productImageName = productNameStr + ".jpg";
-var newURLStr = "?st=" + productNameStr + "&r=" + currPageName;
+var newURLStr = "?st=" + productNameStr + "&r=" + currPageName + "&g=" + paramG;
 var targetURLFName = ("r" in urlParams) ? urlParams["r"] + ".html" : planFName;
 var backPageURL = targetURLFName + newURLStr;
 	
@@ -117,7 +117,7 @@ function ScrollZoom(container, max_scale, factor){
         drag_startedLenta = 0;
     });
 	
-  	$("#bottomButtons").children(".bbutt").hover(
+  	$(".bbutt").hover(
 		function() { $(this).css({'cursor':'pointer', 'opacity':'100'});},
 		function() { $(this).css({'cursor':'auto', 'opacity':'0'})}
     );
@@ -127,7 +127,7 @@ function ScrollZoom(container, max_scale, factor){
 		function() { $(this).css('cursor','auto'); }
 	);
 	
-  	$("#bottomButtons").children(".bbutt").on('click', function() {
+  	$(".bbutt").on('click', function() {
         location = this.dataset.page + ".html";
     });
 			
@@ -214,14 +214,20 @@ function ScrollZoom(container, max_scale, factor){
 	
 <body>
 <div id="main" draggable="false">
-<div class="header">
-	<div><a href="main.html" class="href">MAIN</a></div>
-  	<div><a href="about.html" class="href">ABOUT</a></div>
-  	<div><a href="contacts.html" class="href">CONTACTS</a></div>
-</div>
+
 <div class="loader"><div class="ld">
 <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
 </div></div>
+	
+<div id="topButtons">
+	<img alt="Top Buttons" src="img/buttons/bbuttons.png"/>
+	<img class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
+	<img class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
+	<img class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
+	<img class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
+	<img class="bbutt" alt="Cart" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
+</div>
+
 <div id="container" draggable="false">
 	<div id="slide">
 		<img id="stellage2d" src="img/stellage/juices.jpg" alt="Stellage" style="pointer-events: none;" draggable="false">
@@ -244,8 +250,6 @@ function ScrollZoom(container, max_scale, factor){
 	<div id="shadowWindow" class="hole"></div>
 </div>
 <div id="bottomButtons" draggable="false">
-	<div id="clock"></div>
-	<div id="battery" class="bw"></div>
 	<div id="backButton">
 		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 	viewBox="0 0 6.23 10.52" style="enable-background:new 0 0 6.23 10.52; display: inline-block; width: 8px; vertical-align: middle;" xml:space="preserve">
@@ -263,9 +267,6 @@ function ScrollZoom(container, max_scale, factor){
 	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
 	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
 	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
-</div>
-<div id="phoneFrame">
-	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%"/>
 </div>
 
 </div>

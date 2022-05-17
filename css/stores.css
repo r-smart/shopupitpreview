@@ -62,4 +62,5 @@
 .store {
 	position: absolute;
 	transform: scale(.8);
+	transition: transform .3s;
 }

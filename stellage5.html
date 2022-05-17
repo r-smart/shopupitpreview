@@ -6,7 +6,6 @@
 <link rel="shortcut icon" href="#">
 <link href="css/loader.css" rel="stylesheet" type="text/css">
 <link href="css/UI.css" rel="stylesheet" type="text/css">
-<link href="css/clock.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 	
 <style type="text/css">
@@ -22,7 +21,7 @@ body {
 	height: 2900px;
 	min-height: 844px;
 	top: 0px;
-	transform: translate(-190px, 844px);
+	transform: translate(0px, 844px) scale(.534);
 	transition: transform .6s;
 	user-drag: none; 
 	user-select: none;
@@ -77,13 +76,8 @@ body {
 </style>
 	
 <script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
-<script src="lib/clock.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-(function preload(imgs) {
-$(imgs).each(function(){
-	new Image().src = "img/stellage/" + this;
-	});
-})(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices2.jpg", "eggs.jpg", "meat1.jpg", "meat2.jpg", "milk.jpg", "spices.jpg", "vegetables.jpg", "vegetables2.jpg"]);
 
 var urlParams = {};
 (function () {
@@ -97,24 +91,45 @@ var urlParams = {};
 })();
 
 var currPageName = "stellage5";
+var planName = "plan_v5";
+var productName = "product";
 var currFName = currPageName + ".html";
-var planFName = "plan_v5.html";
-var productFName = "product.html";
+var planFName = planName + ".html";
+var productFName = productName + ".html";
 var gameFName = "game.html";
+var initG = 1;
 var stellageName = ("st" in urlParams) ? urlParams["st"] : "fruits";
+var referrerName = ("r" in urlParams) ? urlParams["r"] : planName;
+var paramG = ("g" in urlParams) ? urlParams["g"] : initG;
 var productName = stellageName;
 var stellageImageName = stellageName + ".jpg";
 var productURLStr = "?pr=" + productName + "&r=" + currPageName + "&perc=";
 var gameURLStr = "?st=" + stellageName + "&r=" + currPageName;
-var pos = {x: -190, y: -1000};
-var scale = 1;
-var gamePP = 1;
+	
+var initS = .534;
+var initX = 0;
+var initY = 0;
+var initG = 1;
+var paramS = ("scale" in urlParams) ? urlParams["scale"] : initS;
+var paramX = ("x" in urlParams) ? urlParams["x"] : initX;
+var paramY = ("y" in urlParams) ? urlParams["y"] : initY;
+var paramG = ("g" in urlParams) ? urlParams["g"] : initG;
+var firefoxMult = navigator.userAgent.indexOf('Firefox') !== -1 ? 1 : -1;
+var pos = {x: 0, y: -600};
+var scale = paramS;
+
 //var t0 = new Date().getTime();
 
 function onLoadActions(){
 	$('.loader').fadeOut(300, function(){$(this).remove()});
-	$("#slide").css('transform', 'translate(' + pos.x + 'px, ' + pos.y +'px) scale(' + scale + ', ' + scale + ')');
+	$("#slide").css('transform', 'translate(' + pos.x + 'px, ' + pos.y +'px) scale(' + initS + ', ' + initS + ')');
 	$(".game>video, .perc>video").each(function () {$(this).get(0).play()});
+	preloadImages(["beer.jpg", "bread.jpg", "breakfasts.jpg", "canned.jpg", "eggs.jpg", "fresh.jpg", "fruits.jpg", "greens.jpg", "greens2.jpg", "juices.jpg", "juices2.jpg", "meat.jpg", "milk.jpg", "sauces.jpg", "spices.jpg", "vegetables.jpg"]);
+}
+function preloadImages(imgs) {
+$(imgs).each(function(){
+	new Image().src = "img/stellage/" + this;
+	});
 }
 	
 $(window).on('load', function(){
@@ -123,7 +138,6 @@ $(window).on('load', function(){
 
 $(document).ready(function (){
     var scroll_zoom = new ScrollZoom($('#container'), 5, .1);
-//	console.log('ready: ' + (new Date().getTime() - t0)/1000)
 })
 
 function ScrollZoom(container, max_scale, factor){
@@ -139,14 +153,10 @@ function ScrollZoom(container, max_scale, factor){
 	$("#stellage2d").attr('src', "img/stellage/" + stellageImageName);
 	$("#stellage2d").attr('data-page', "img/stellage/" + stellageName);
 	$("#stellage2d").css('visibility', 'visible');
-//	$("#stellage2d").on('click', function() {
-////		console.log(isMoved)
-//        if(!isMoved) location = "product.html" + productURLStr + "0";
-//	})
 
     target.css('transform-origin','0 0')
     target.on("mousewheel DOMMouseScroll",scrolled)
-    target.on('mousemove', moved)
+    $(document).on('mousemove', moved)
     target.on('mousedown', function() {
         drag_started = 1;
 		isMoved = 0;
@@ -154,35 +164,33 @@ function ScrollZoom(container, max_scale, factor){
         last_mouse_position = { x: event.pageX, y: event.pageY};
     });
 
-    target.on('mouseup', function() {
+    $(document).on('mouseup', function() {
         drag_started = 0;
     });
-
-    target.on('mouseout', function() {
-        drag_started = 0;
-    });	
-		
+	
     target.on('click', function() {
-		console.log("target click")
-        if(!isMoved) location = productFName + productURLStr + "0";
+        if(!isMoved) location = productFName + productURLStr + "0&g=" + paramG;
     });
 			
     $(".game").on('click', function(e) {
-		e.stopPropagation()
-		console.log(".game click");
-        if(!isMoved) location = gameFName + gameURLStr;
+		e.stopPropagation();
+        if(!isMoved){
+			paramG++;
+			location = gameFName + gameURLStr  + "&g=" + ((paramG % 2) + 1);
+		}
     });
 			
     $(".perc").on('click', function() {
-        if(!isMoved) if(!isMoved) location = productFName + productURLStr + "1";
+        if(!isMoved) if(!isMoved) location = productFName + productURLStr + "1&g=" + paramG;
     });
 		
-  	$("#bottomButtons").children(".bbutt").on('click', function() {
+  	$(".bbutt").on('click', function() {
         location = this.dataset.page + ".html";
     });
 	
   	$("#backButton").on('click', function() {
-        location = planFName;
+		if (("scale" in urlParams) && referrerName == planName) history.back();
+        else location = planFName + "?g=" + paramG;
     });
 	
   	$("#backButton, .game, .perc").hover(
@@ -190,7 +198,7 @@ function ScrollZoom(container, max_scale, factor){
 		function() { $(this).css("cursor", "auto")}
    	);
 		
-  	$("#bottomButtons").children(".bbutt").hover(
+  	$(".bbutt").hover(
 		function() { $(this).css({'cursor':'pointer', 'opacity':'100'});},
 		function() { $(this).css({'cursor':'auto', 'opacity':'0'})}
     );
@@ -206,7 +214,7 @@ function ScrollZoom(container, max_scale, factor){
           //we are on firefox
           delta = e.originalEvent.detail;
         }
-        delta = -1 * Math.max(-1,Math.min(1,delta)) // cap the delta to [-1,1] for cross browser consistency
+        delta = firefoxMult * Math.max(-1,Math.min(1,delta)) // cap the delta to [-1,1] for cross browser consistency
 
         // determine the point on where the slide is zoomed in
         zoom_target.x = (zoom_point.x - pos.x)/scale
@@ -214,7 +222,7 @@ function ScrollZoom(container, max_scale, factor){
 
         // apply zoom
         scale -= delta * factor * scale
-        scale = Math.max(1,Math.min(max_scale,scale))
+        scale = Math.max(initS, Math.min(max_scale,scale))
 
         // calculate x and y based on zoom
         pos.x = -zoom_target.x * scale + zoom_point.x
@@ -249,7 +257,7 @@ function ScrollZoom(container, max_scale, factor){
         if(pos.y > 0) pos.y = 0;
         if(pos.y < -size.h * scale + 844) pos.y = -size.h * scale + 844;
 
-        target.css('transform','translate('+(pos.x)+'px,'+(pos.y)+'px) scale('+scale+','+scale+')')
+        target.css('transform', 'translate(' + pos.x + 'px, ' + pos.y + 'px) scale(' + scale+', ' + scale+')')
     }
 }
 	
@@ -259,14 +267,13 @@ function ScrollZoom(container, max_scale, factor){
 <body>
 
 <div id="main" draggable="false">
-<div class="header">
-	<div><a href="main.html" class="href">MAIN</a></div>
-  	<div><a href="about.html" class="href">ABOUT</a></div>
-  	<div><a href="contacts.html" class="href">CONTACTS</a></div>
+
+<div class="loader">
+	<div class="ld">
+		<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+	</div>
 </div>
-<div class="loader"><div class="ld">
-<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-</div></div>
+
 <div id="container" draggable="false">
 	<div id="slide">
 		<img id="stellage2d" src="img/stellage/fruits.jpg" alt="Stellage" style="pointer-events: none;" draggable="false"/>
@@ -320,9 +327,16 @@ function ScrollZoom(container, max_scale, factor){
 		</div>
 	</div>
 </div>
+	
+<div id="topButtons">
+	<img alt="Top Buttons" src="img/buttons/bbuttons.png"/>
+	<img class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
+	<img class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
+	<img class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
+	<img class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
+	<img class="bbutt" alt="Cart" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
+</div>
 <div id="bottomButtons">
-	<div id="clock"></div>
-	<div id="battery" class="bw"></div>
 	<div id="backButton">
 		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 	viewBox="0 0 6.23 10.52" style="enable-background:new 0 0 6.23 10.52; display: inline-block; width: 8px; vertical-align: middle;" xml:space="preserve">
@@ -334,15 +348,12 @@ function ScrollZoom(container, max_scale, factor){
 		</g>
 		</svg>&nbsp;&nbsp;&nbsp;Back
 	</div>
-	<img alt="home" src="img/buttons/bbuttons.png"/>
+	<img alt="Bottom Buttons" src="img/buttons/bbuttons.png"/>
 	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
 	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
 	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
 	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
 	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
-</div>
-<div id="phoneFrame">
-	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%"/>
 </div>
 
 </div>

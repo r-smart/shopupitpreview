@@ -6,15 +6,8 @@
 <link rel="shortcut icon" href="#">
 <link href="css/loader.css" rel="stylesheet" type="text/css">
 <link href="css/UI.css" rel="stylesheet" type="text/css">
-<link href="css/clock.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 <style type="text/css">
-	
-#slide{
-  width:100%;
-  height:100%;
-  transition: transform .3s;
-}
 	
 #slide {
 	position:absolute;
@@ -37,7 +30,6 @@
 </style>
 	
 <script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
-<script src="lib/clock.js" type="text/javascript"></script>
 	
 <script type="text/javascript">
 	
@@ -53,14 +45,18 @@ var urlParams = {};
 })();
 
 var currPageName = "game";
+var planName = "plan_v5";
 var currPageFName = currPageName + ".html";
 var stellageFName = "stellage5.html";
-var planFName = "plan_v5.html";
+var planFName = planName + ".html";
+var initG = 1;
+var paramG = ("g" in urlParams) ? urlParams["g"] : initG;
 var stellageName = ("st" in urlParams) ? urlParams["st"] : "fruits";
-var referrerName = ("r" in urlParams) ? urlParams["r"] + ".html" : "planFName";
+var referrerName = ("r" in urlParams) ? urlParams["r"] : planName;
+var referrerFName = referrerName + ".html";
 var productName = stellageName;
-var URLStr = "?st=" + stellageName + "&r=" + currPageName;
-
+var strParams = "?st=" + stellageName + "&r=" + currPageName + "&g=" + ((paramG % 2) + 1);
+	
 function onLoadActions(){
 	$('.loader').fadeOut(300, function(){
 		$("#v1").get(0).play();
@@ -74,14 +70,13 @@ $(window).on('load', function(){
 });
 
 $(document).ready(function (){
-    var scroll_zoom = new ScrollZoom($('#container'),5,0.1);
+    var scroll_zoom = new DR($('#container'),5,0.1);
+	setVideo(paramG);
 })
 
-function ScrollZoom(container,max_scale,factor){
-    var target = container.children().first()
-    var pos = {x:0,y:0};
-	checkCookie();
-		
+function DR(container,max_scale,factor){
+	$("#slide").css('transform','translateY(0px)');
+
   	$("#backButton, #v1").hover(
 		function() { $(this).css('cursor', 'pointer'); },
 		function() { $(this).css('cursor','auto'); }
@@ -92,90 +87,61 @@ function ScrollZoom(container,max_scale,factor){
 		currVideo.paused ? currVideo.play() : currVideo.pause();
     });
 	
-  	$("#bottomButtons").children(".bbutt").hover(
+  	$(".bbutt").hover(
 		function() { $(this).css({'cursor':'pointer', 'opacity':'100'});},
 		function() { $(this).css({'cursor':'auto', 'opacity':'0'})}
     );
 	
-  	$("#bottomButtons").children(".bbutt").on('click', function() {
+  	$(".bbutt").on('click', function() {
         location = this.dataset.page + ".html";
     });
 		
   	$("#backButton").on('click', function() {
-        window.location = referrerName + URLStr;
+//		console.log(referrerFName + strParams)
+		if ("r" in urlParams) history.back();
+        else window.location = planFName + "?g=" + ((paramG % 2) + 1);
+
     });
 	
 	$("#v1").get(0).onended = function(e) {
-		window.location = referrerName + URLStr;
+		if ("r" in urlParams) history.back();
+        else window.location = planFName + "?g=" + ((paramG % 2) + 1);
 	}
-
-	target.css('transform','translateY('+(pos.y)+'px)');
-}
-
-//console.log("history.length = " + history.length)
-//console.log("document.referrer = " + document.referrer)
-//console.log("window.location = " + window.location)
-//console.log(document.referrer != "")
-//	
-	
-function setCookie(cname, cvalue) {
-	document.cookie = cname + "=" + cvalue + ";SameSite=Strict;Secure;";
-//	console.log(document.cookie)
-}
-
-function getCookie(cname) {
-	var cn = cname + "=";
-//	console.log(document.cookie)
-	if (document.cookie){
-		var ca = document.cookie.split(';');
-		for(var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) == ' ') c = c.substring(1);
-			if (c.indexOf(cn) == 0) return c.substring(cn.length, c.length);
-		}
-	}
-	return "";
-}
-
-function checkCookie() {
-	
-	var n = getCookie("npp");
-	if (n == "") n = 1;
-	++n;
-	
-	setCookie("npp", n);
-	setVideo(n);
-//console.log($('#v1').html());
 }
 	
 function setVideo(n){
-//	$('#s1').attr("src", "img/GAME_" + (n % 2 + 1) + ".mp4");
-	$('.game').replaceWith('<video id="v1" autoplay muted preload="auto"><source id="s1" src="img/GAME_' + (n % 2 + 1) + '.mp4" type="video/mp4"> Your browser does not support the video tag.</video>');
+	$('#v1').children().first().attr("src", "img/GAME_" + paramG + ".mp4");
+	$('#v1').attr("preload", "auto");
+	$('#v1').get(0).load();
 }
 
 </script>
 </head>
 
 <body>
-<div id="main" style="position:relative; width: 437px; height: 882px; margin: 0 auto;" draggable="false">
-<div class="header">
-	<div><a href="main.html" class="href">MAIN</a></div>
-  	<div><a href="about.html" class="href">ABOUT</a></div>
-  	<div><a href="contacts.html" class="href">CONTACTS</a></div>
-</div>
+<div id="main" draggable="false">
+
 <div class="loader"><div class="ld">
 <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
 </div></div>
+	
+<div id="topButtons">
+	<img alt="Top Buttons" src="img/buttons/bbuttons.png"/>
+	<img class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
+	<img class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
+	<img class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
+	<img class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
+	<img class="bbutt" alt="Cart" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
+</div>
+
 <div id="container" draggable="false">
 	<div id="slide">
-		<video id="v1" muted preload="auto">
-			<source id="s1" src="img/GAME_1.mp4" type="video/mp4"> Your browser does not support the video tag.
+		<video id="v1" muted>
+			<source id="s1" src="#" type="video/mp4"> Your browser does not support the video tag.
 		</video> 
 	</div>
 </div>
 <div id="bottomButtons">
-	<div id="clock"></div>
-	<div id="battery" class="bw"></div>
 	<div id="backButton">
 		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 	viewBox="0 0 6.23 10.52" style="enable-background:new 0 0 6.23 10.52; display: inline-block; width: 8px; vertical-align: middle;" xml:space="preserve">
@@ -187,15 +153,12 @@ function setVideo(n){
 		</g>
 		</svg>&nbsp;&nbsp;&nbsp;Back
 	</div>
-	<img alt="home" src="img/buttons/bbuttons.png"/>
+	<img alt="Bottom Buttons" src="img/buttons/bbuttons.png"/>
 	<img id="home" class="bbutt" alt="home" src="img/buttons/home.png" data-page="plan_v5" style="left:23px; top:8px;"/>
 	<img id="filter" class="bbutt" alt="filter" src="img/buttons/filter.png" data-page="plan_v5" style="left:98px; top:8px;"/>
 	<img id="search" class="bbutt" alt="search" src="img/buttons/search.png" data-page="plan_v5" style="left:173px; top:8px;"/>
 	<img id="fav" class="bbutt" alt="fav" src="img/buttons/fav.png" data-page="plan_v5" style="left:248px; top:8px;"/>
 	<img id="basket" class="bbutt" alt="" src="img/buttons/basket.png" data-page="plan_v5" style="left:323px; top:8px;"/>
-</div>
-<div id="phoneFrame">
-	<img alt="" src="img/iPhone 13 pro 437x882.png" style="width:100%; height:100%; max-width:100%; pointer-events: none;"/>
 </div>
 
 </div>
