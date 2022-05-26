@@ -4,7 +4,69 @@ body {
 	font-style: normal;
 	font-weight: 400;
 	margin: 0;
-	background: url("../img/Floor Texture 2 (0-00-00-00).png");
+	background-color:#FFFFFF;
+	background-image: url("../img/Floor Texture 2 (0-00-00-00).png");
+	background-position: center;
+}
+/*
+
+.container{
+	height: 844px;
+	top: 75px;
+	left: 0px;
+	overflow: hidden;
+	margin: 0px auto;
+	z-index: 10;
+	background-color:#00A4AC;
+}
+*/
+
+.plan-container{
+
+}
+
+.mycontainer{
+	background-image: url("../img/Floor Texture 2 (0-00-00-00).png");
+	position: relative;
+	display: none;
+/*	opacity: 0;*/
+/*	height: 0px;*/
+/*	overflow: hidden;*/
+	transform: translateY(844px);
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.nofields{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.buttrow{
+	background-color:#ffffff;
+}
+
+.uibutt{
+	text-align: center;
+}
+
+.store-img{
+	background-color:#ffffff;
+	text-align: center;
+	height:140px;
+	padding-top: 10px;
+}
+
+.store-img2{
+	background-color:#aaaaaa;
+	text-align: center;
+	height:140px;
+	padding-top: 10px;
+}
+
+.slide {
+	text-align: center;
+/*	background-image: url("../img/Floor Texture 2 (0-00-00-00).png");*/
 }
 
 #main {
@@ -66,9 +128,11 @@ body {
 }
 
 .bbutt {
+/*
 	position:absolute;
 	z-index: 10;
-	opacity: 0;
+*/
+/*	opacity: 0;*/
 	transition: opacity .3s;
 }
 

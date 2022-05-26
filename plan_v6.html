@@ -1,0 +1,363 @@
+<!doctype html>
+<!--Quite a few clients strip your Doctype out, and some even apply their own. Many clients do honor your doctype and it can make things much easier if you can validate constantly against a Doctype.-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Shoupit</title>
+	
+<link rel="shortcut icon" href="#">
+<link href="css/bootstrap-4.4.1.css" rel="stylesheet">
+<link href="css/PLAN_1-5.css" rel="stylesheet" type="text/css">
+<link href="css/loader.css" rel="stylesheet" type="text/css">
+<link href="css/UI.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+	               
+<style type="text/css">
+
+.plan {
+	background-image: url("img/PLAN/PLAN_VERT 2.jpg");
+	background-size: cover;
+/*	background-size: contain;*/
+	background-repeat: no-repeat;
+	background-position: center top;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.slide img{
+	max-width: 100%;
+	max-height: 100%;
+}
+
+@media screen and (min-width: 576px){
+	.plan {
+		background-image: url("img/PLAN/PLAN_HOR.jpg");
+	}
+
+	.slide {
+		position:relative;
+		width:100%;
+		height:100%;
+		top: 0px;
+		transform: translate(0px, 844px);
+		transition: transform .6s;
+		user-drag: none; 
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-user-drag: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+/*		background-image: url("img/PLAN/PLAN_VERT 2.jpg");*/
+	}
+	
+}
+	
+.stellage3d{
+	z-index: 1;
+	position: absolute;
+	opacity: 0;
+	
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+		
+.game{
+	position:absolute;
+	z-index: 1;
+	transform: scale(40%);
+}
+	
+.perc{
+	position:absolute;
+	z-index: 1;
+	transform: scale(15%)
+}
+	
+.game>img{
+	pointer-events: none;
+	z-index: 1;
+}
+	
+.game>video{
+	pointer-events: none;
+	position:absolute;
+	top:79px;
+	left:83px;
+	z-index: 2;
+}
+	
+.perc>img{
+	pointer-events: none;
+	z-index: 1;
+}
+	
+.perc>video {
+	pointer-events: none;
+	position:absolute;
+	top:50px;
+	left:50px;
+	z-index: 2;
+}
+	
+.l2, .l3 {
+	visibility:hidden;
+}
+
+</style>
+	
+<script src="lib/jquery-3.6.0.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	
+//(function preload(imgs) {
+//$(imgs).each(function(){
+//	new Image().src = "img/PLAN/layers/" + this;
+//	});
+//})(["_0001_bread.png", "_0002_meat2.png", "_0004_spices.png", "_0005_Juices1.png", "_0006_eggs.png", "_0008_canned.png", "_0007_fresh.png", "_0009_Fruits.png", "_0010_breakfasts.png", "_0011_sauces.png", "_0012_juices2.png", "_0013_juices3.png", "_0014_frozen.png", "_0015_fish2.png", "_0016_greens.png", "_0017_greens2.png", "_0018_vegetables.png", "_0019_dairy.png", "_0020_beer.png", "_0021_fish.png", "_0022_milk.png"]);
+
+var urlParams = {};
+(function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+	while (match = search.exec(query)) urlParams[decode(match[1])] = decode(match[2]);
+})();
+ 
+var stellageFName = "stellage5.html";
+var gameFName = "game.html";
+var productFName = "product.html";
+var currPageName = "plan_v6";
+var currFName = currPageName + ".html";
+var stellageName = ("st" in urlParams) ? urlParams["st"] : "fruits";
+
+var initS = 1;
+var initX = 0;
+var initY = 0;
+var initG = 1;
+var paramS = ("scale" in urlParams) ? urlParams["scale"] : initS;
+var paramX = ("x" in urlParams) ? urlParams["x"] : initX;
+var paramY = ("y" in urlParams) ? urlParams["y"] : initY;
+var paramG = ("g" in urlParams) ? urlParams["g"] : initG;
+var firefoxMult = navigator.userAgent.indexOf('Firefox') !== -1 ? 1 : -1;
+	
+function onLoadActions(){
+	$('.loader').fadeOut(300, function(){
+		$(this).remove();
+		$(".game>video").each(function(){$(this).get(0).play();});
+		$(".perc>video").each(function(){$(this).get(0).play();});
+	});
+	$('.slide').css('transform', 'translate(' + paramX + 'px, ' + paramY +'px) scale(100%, 100&)');
+	
+//	$('#container').children().first().css('transform', 'translate(' + paramX + 'px, ' + paramY +'px) scale(' + paramS + ', ' + paramS + ')');
+//	$("#container").css('background-image', 'none');
+}
+	
+function loadStellageImages(dir){
+	var imgs = ["_0001_bread", "_0002_meat2", "_0004_spices", "_0005_Juices1", "_0006_eggs", "_0008_canned", "_0007_fresh", "_0009_Fruits", "_0010_breakfasts", "_0011_sauces", "_0012_juices2", "_0013_juices3", "_0014_frozen", "_0015_fish2", "_0016_greens", "_0017_greens2", "_0018_vegetables", "_0019_dairy", "_0020_beer", "_0021_fish", "_0022_milk"];
+	$(imgs).each(function(){ new Image().src = "img/PLAN/layers/" + this + ".png"; });
+}
+	
+$(window).on('load', function(){
+	setTimeout(onLoadActions, 1000); 
+});
+
+$(document).ready(function (){
+    var scroll_zoom = new ScrollZoom(2,0.1);
+	var stellageDirection = "horizontal";
+	var mob = window.matchMedia("min-width: 576px");
+	if(mob.matches){
+		stellageDirection = "vertical";
+	}
+	loadStellageImages(stellageDirection);
+})
+
+function ScrollZoom(max_scale,factor){
+    var target = $(".slide");
+	var pos = {x: paramX, y: paramY};
+	var scale = paramS;
+    var size = {w: target.width(), h: target.height()};
+    var zoom_target = {x:0, y:0};
+    var zoom_point = {x:0, y:0};
+    var last_mouse_position = { x:0, y:0 };
+    var drag_started = 0;
+	var isMoved = 0;
+	var hidedMatras = 0;
+	
+	target.css('transform', 'translate(' + pos.x + 'px, ' + pos.y + 'px)');
+//	target.css('transform', 'translate(' + pos.x + 'px, ' + pos.y + 'px) scale(' + scale + ', ' + scale + ')');
+    target.css('transform-origin', '0 0');
+    target.on("mousewheel DOMMouseScroll", scrolled);
+    target.on('mousemove', moved);
+    target.on('mousedown', function() {
+        drag_started = 1;
+		isMoved = 0;
+        target.css({'cursor':'move', 'transition': 'transform 0s'});
+//        target.children("img").css('pointer-events', 'none');
+        last_mouse_position = { x: event.pageX, y: event.pageY};
+    });
+
+    target.on('mouseup', function() {
+        drag_started = 0;
+		target.children(":not(:first-child)").css({'transition': 'transform .3s'});
+//		target.children("img").css('pointer-events', 'all');
+    });
+	
+    target.on('mouseout', function() {
+        if(target.id == "slide") drag_started = 0;
+    });
+
+    target.children(".stellage3d").on('mousedown', function(e) {
+		e.preventDefault();
+//        $(this).unbind("mousedown");
+//        $(this).css('pointer-events', 'none');
+    });
+
+    target.children(".stellage3d").on('click', function() {
+        if(!isMoved) location = stellageFName + "?st=" + this.dataset.page + "&scale=" + scale + "&x=" + pos.x + "&y=" + pos.y + "&g=" + paramG;
+    });
+
+  	$(".bbutt").on('click', function() {
+        location = this.dataset.page + ".html" + "?g=" + paramG;
+    });
+		
+    $(".game").on('click', function() {
+        if(!isMoved){
+			paramG++;
+			location = gameFName + "?r=" + currPageName + "&scale=" + scale + "&x=" + pos.x + "&y=" + pos.y + "&g=" + paramG;
+		}
+    });
+			
+    $(".perc").on('click', function() {
+        if(!isMoved) location = productFName + "?pr=" + this.dataset.page + "&r=" + currPageName + "&scale=" + scale + "&x=" + pos.x + "&y=" + pos.y + "&g=" + paramG;
+    });
+
+    $(".stellage3d").hover(
+		function() { $(this).css({'cursor':'pointer', 'opacity':'100'}) },
+		function() { $(this).css({'cursor':'auto', 'opacity':'0'}) }
+	);
+	
+  	$(".game, .perc").hover(
+		function() { $(this).css("cursor", "pointer")},
+		function() { $(this).css("cursor", "auto")}
+   	);
+	
+  	$(".bbutt").hover(
+		function() {
+			$(this).css('cursor', 'pointer');
+			var s = $(this).attr("src");
+			s = s.slice(0, -5) + ".png"
+			$(this).attr("src", s);
+		},
+		function() {
+			$(this).css('cursor', 'auto');
+			var s = $(this).attr("src");
+			s = s.slice(0, -4) + "0.png"
+			$(this).attr("src", s);
+		}
+    );
+	
+    $(".bbutt").on('click', function() {
+        location = this.dataset.page + ".html";
+    });
+	
+    function scrolled(e){
+//		console.log("scrolled")
+//        var offset = container.offset();
+        zoom_point.x = e.pageX;// - offset.left;
+        zoom_point.y = e.pageY;// - offset.top;
+
+        e.preventDefault();
+        var delta = e.deltaY || e.originalEvent.wheelDelta;
+        if (delta === undefined) {
+          delta = e.originalEvent.detail;
+        }
+        delta = firefoxMult * Math.max(-1,Math.min(1,delta));
+
+        zoom_target.x = (zoom_point.x - pos.x)/scale;
+        zoom_target.y = (zoom_point.y - pos.y)/scale;
+
+        scale -= delta * factor * scale;
+        scale = Math.max(initS, Math.min(max_scale,scale));
+
+        pos.x = -zoom_target.x * scale + zoom_point.x;
+        pos.y = -zoom_target.y * scale + zoom_point.y;
+
+        update();
+    }
+
+    function moved(event){
+        if(drag_started == 1) {
+            var current_mouse_position = { x: event.pageX, y: event.pageY};
+            var change_x = current_mouse_position.x - last_mouse_position.x;
+            var change_y = current_mouse_position.y - last_mouse_position.y;
+
+            last_mouse_position = current_mouse_position;
+            pos.x += change_x;
+            pos.y += change_y;
+			isMoved = 1;
+
+        update();
+        }
+    }
+
+    function update(){
+//		if(pos.x > 0) pos.x = 0;
+//        if(pos.x < -size.w * scale + 390) pos.x = -size.w * scale + 390;
+//		if(scale > .2){
+//			if(pos.y > 0) pos.y = 0;
+//			if(pos.y < -size.h*scale + 844) pos.y = -size.h * scale + 844;
+//		}
+//		else{
+//			if(pos.y < 0) pos.y = 0;
+//			else if (pos.y > 844 - size.h*scale) pos.y = -size.h * scale + 844;
+//		}
+
+        target.css('transform','translate(' + pos.x + 'px,' + pos.y + 'px) scale(' + scale + ', ' + scale + ')');
+		
+		if(scale > .4) $(".l3").css('visibility', 'visible');
+		else $(".l3").css('visibility', 'hidden');
+		if(scale > .3) $(".l2").css('visibility', 'visible');
+		else $(".l2").css('visibility', 'hidden');
+		
+		if (!hidedMatras){
+			$("#matrasBG>div").fadeOut(1000, function(){
+//				$("#container").css('background-image', 'url("img/matras.jpg")');
+				$(this).remove();
+			});
+			hidedMatras = 1;
+		}
+    }
+}
+
+</script>
+</head>
+<body>
+<div class="container-fluid align-items-start nofields">
+	<div class="row no-gutters">
+<!--		<div class="col-12 plan"><div class="slide"><img src="img/PLAN/PLAN_HOR.jpg" alt=""/></div></div>-->
+		<div class="col-12 plan"><div class="slide"></div></div>
+<!--		<div class="col-12 plan"><img class="plan-img" src="img/PLAN/PLAN_VERT 2.jpg" alt="plan"/></div>-->
+	</div>
+
+	<div class="row justify-content-around no-gutters buttrow">
+		<div class="col uibutt"><img class="bbutt" alt="home" src="img/buttons/home0.png" data-page="stores"/></div>
+		<div class="col uibutt"><img class="bbutt" alt="filter" src="img/buttons/filter0.png" data-page="plan_v6"/></div>
+		<div class="col uibutt"><img class="bbutt" alt="search" src="img/buttons/search0.png" data-page="plan_v6"/></div>
+		<div class="col uibutt"><img class="bbutt" alt="fav" src="img/buttons/fav0.png" data-page="plan_v6"/></div>
+		<div class="col uibutt"><img class="bbutt" alt="Cart" src="img/buttons/basket0.png" data-page="plan_v6"/></div>
+	</div>
+
+</div>
+
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap-4.4.1.js"></script>
+</body>
+</html>
